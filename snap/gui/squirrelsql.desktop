@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=SQuirreLSQL
+Comment=Universal SQL Client
+Exec=squirrelsql
+Terminal=false
+Type=Application
+Icon=${SNAP}/meta/gui/squirrelsql.png
+Categories=Development;Database;
+Keywords=PostgreSQL;MySQL;SQLite;SQL
+

@@ -1,0 +1,43 @@
+name: squirrelsql
+version: 1
+version-script: ls squirrel*-standard.*|tail -1|sed  's/squirrel-\?sql-\(.*\)-standard.\(jar\|zip\)/\1/'|tr -s '_' '-'
+summary: A Java SQL client for any JDBC compliant database
+description: |
+  SQuirreL SQL Client is a graphical SQL client written in Java that will allow
+  you to view the structure of a JDBC compliant database, browse the data in
+  tables, issue SQL commands etc.
+
+  This package includes JDBC drivers for sqlite, mysql and postgresql.
+
+  Homepage: http://www.squirrelsql.org/
+
+confinement: strict
+grade: stable
+icon: data/gui/squirrelsql.png
+
+apps:
+  squirrelsql:
+    command: desktop-launch sh $SNAP/squirrelsql/squirrel-sql.sh -userdir $HOME/squirrelsql.settings
+    plugs: 
+      - home
+      - network
+      - x11
+    environment:
+      _JAVA_OPTIONS: -Duser.home=$SNAP_USER_DATA 
+
+parts:
+  squirrelsql:
+    after: [desktop-glib-only]
+    plugin: jdk
+    source: .
+    override-build: |
+      set -x 
+      JAR=$(ls squirrel*-standard.jar|tail -1)
+      java -jar $JAR ./data/squirrelsql/installer.script
+      mv tmp/squirrelsql $SNAPCRAFT_PART_INSTALL/
+      mkdir -p $SNAPCRAFT_PART_INSTALL/meta/gui/
+      cp ./data/drivers/*.jar $SNAPCRAFT_PART_INSTALL/squirrelsql/lib/
+      cp ./data/squirrelsql/squirrel-sql.sh $SNAPCRAFT_PART_INSTALL/squirrelsql/
+      cp ./data/gui/* $SNAPCRAFT_PART_INSTALL/meta/gui/
+    build-packages:
+      - default-jre
