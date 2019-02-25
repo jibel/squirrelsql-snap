@@ -1,5 +1,6 @@
+base: core18
 name: squirrelsql
-version: 1
+version: "1"
 version-script: ls squirrel*-standard.*|tail -1|sed  's/squirrel-\?sql-\(.*\)-standard.\(jar\|zip\)/\1/'|tr -s '_' '-'
 summary: A Java SQL client for any JDBC compliant database
 description: |
@@ -24,11 +25,33 @@ apps:
       - x11
     environment:
       _JAVA_OPTIONS: -Duser.home=$SNAP_USER_DATA 
+      JAVA_HOME: $SNAP/usr/lib/jvm/default-java
+      PATH: $SNAP/usr/lib/jvm/default-java/bin:$SNAP/usr/lib/jvm/default-java/jre/bin:$PATH
 
 parts:
+  desktop-glib-only:
+    source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
+    source-subdir: glib-only
+    plugin: make
+    build-packages:
+      - libglib2.0-dev
+    stage-packages:
+      - libglib2.0-bin
+  jdk:
+    plugin: nil
+    stage-packages:
+        -  default-jre
+    filesets:
+        jdk-bits: [-usr/lib/jvm/default-java/bin,
+                   -usr/lib/jvm/default-java/include,
+                   -usr/lib/jvm/default-java/lib, 
+                   -usr/share/doc]
+    stage:
+        - $jdk-bits
+
   squirrelsql:
-    after: [desktop-glib-only]
-    plugin: jdk
+    after: [desktop-glib-only, jdk]
+    plugin: nil
     source: .
     override-build: |
       set -x 
