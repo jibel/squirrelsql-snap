@@ -36,7 +36,18 @@ parts:
     build-packages:
       - libglib2.0-dev
     stage-packages:
+      - adwaita-icon-theme
+      - dmz-cursor-theme
+      - gnome-themes-standard
+      - libgdk-pixbuf2.0-0
       - libglib2.0-bin
+      - libxkbcommon0
+      - light-themes
+      - locales-all
+      - shared-mime-info
+      - ttf-ubuntu-font-family
+      - xdg-user-dirs
+
   jdk:
     plugin: nil
     stage-packages:
