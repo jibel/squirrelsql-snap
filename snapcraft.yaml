@@ -1,7 +1,5 @@
 base: core18
 name: squirrelsql
-version: "1"
-version-script: ls squirrel*-standard.*|tail -1|sed  's/squirrel-\?sql-\(.*\)-standard.\(jar\|zip\)/\1/'|tr -s '_' '-'
 summary: A Java SQL client for any JDBC compliant database
 description: |
   SQuirreL SQL Client is a graphical SQL client written in Java that will allow
@@ -15,6 +13,7 @@ description: |
 confinement: strict
 grade: stable
 icon: data/gui/squirrelsql.png
+adopt-info: squirrelsql
 
 apps:
   squirrelsql:
@@ -73,5 +72,6 @@ parts:
       cp ./data/drivers/*.jar $SNAPCRAFT_PART_INSTALL/squirrelsql/lib/
       cp ./data/squirrelsql/squirrel-sql.sh $SNAPCRAFT_PART_INSTALL/squirrelsql/
       cp ./data/gui/* $SNAPCRAFT_PART_INSTALL/meta/gui/
+      snapcraftctl set-version "$(ls squirrel*-standard.*|tail -1|sed  's/squirrel-\?sql-\(.*\)-standard.\(jar\|zip\)/\1/'|tr -s '_' '-')"
     build-packages:
       - default-jre
